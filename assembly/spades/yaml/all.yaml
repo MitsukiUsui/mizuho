@@ -1,0 +1,36 @@
+[
+  {
+    orientation: "fr",
+    type: "paired-end",
+    right reads: [
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_01_MFC1_Anode_1_3_S18_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_03_MFC1_Anode_3_1_S19_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_05_MFC1_Anode_5_2_S20_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_07_MFC1_Anode_7_2_S21_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_09_MFC1_Anode_8_1_S22_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_11_MFC1_Channel_5_S23_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_13_MFC2_Anode_2_2_S24_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_15_MFC2_Anode_3_1_S25_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_17_MFC2_Anode_5_1_S26_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_19_MFC2_Anode_6_2_S27_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_21_MFC2_Anode_7_1_S28_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_23_MFC2_Anode_8_1_S29_R1_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_25_MFC2_Channel_8_S30_R1_001_AHMGH5BCXY.fastq",      
+    ],
+    left reads: [
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_02_MFC1_Anode_1_3_S18_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_04_MFC1_Anode_3_1_S19_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_06_MFC1_Anode_5_2_S20_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_08_MFC1_Anode_7_2_S21_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_10_MFC1_Anode_8_1_S22_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_12_MFC1_Channel_5_S23_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_14_MFC2_Anode_2_2_S24_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_16_MFC2_Anode_3_1_S25_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_18_MFC2_Anode_5_1_S26_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_20_MFC2_Anode_6_2_S27_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_22_MFC2_Anode_7_1_S28_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_24_MFC2_Anode_8_1_S29_R2_001_AHMGH5BCXY.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/trim/3years_26_MFC2_Channel_8_S30_R2_001_AHMGH5BCXY.fastq",   
+    ]
+  }
+]

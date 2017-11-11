@@ -5,7 +5,6 @@
 !*/
 
 # ignore certain directory
-log/
 workspace/
 tmp/
 
@@ -14,4 +13,4 @@ tmp/
 !*.py
 !*.sh
 !*.md
-!*.yml
+!*.yaml
