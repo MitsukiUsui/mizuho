@@ -14,7 +14,7 @@ def main(listFilepath, baseDirec, outFilepath):
             for scaffname in scaffname_lst:
                 inFilepath="{}/{}/genes.faa".format(assemDirec, scaffname)
                 for i,record in enumerate(SeqIO.parse(inFilepath, "fasta")):
-                    seqId="{0}:{1}:{2:04d}".format(assemname, scafname, i + 1)
+                    seqId="{0}:{1}:{2:04d}".format(assemname, scaffname, i + 1)
                     record.id=seqId
                     record.name=seqId
                     record.description=""
@@ -26,6 +26,6 @@ if __name__=="__main__":
     baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
     
     outDirec="{}/mmseqs".format(baseDirec)
-    os.makedirs(outDirec)
+    os.makedirs(outDirec, exist_ok=True)
     outFilepath="{}/merge.faa".format(outDirec)
     main(listFilepath, baseDirec, outFilepath)

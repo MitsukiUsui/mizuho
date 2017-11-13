@@ -1,0 +1,24 @@
+[
+  {
+    orientation: "fr",
+    type: "paired-end",
+    right reads: [
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_06m_chamber1_1_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_06m_chamber1_2_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber1_1_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber1_2_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber2A_1_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber2_1_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber2_2_R1.fastq"
+    ],
+    left reads: [
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_06m_chamber1_1_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_06m_chamber1_2_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber1_1_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber1_2_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber2A_1_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber2_1_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_18m_chamber2_2_R2.fastq"
+    ]
+  }
+]

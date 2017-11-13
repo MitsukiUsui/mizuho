@@ -15,38 +15,50 @@ def translator(taxid):
     except KeyError:
         return None
 
-def main(assemname):
-    directory="./tmp/{}".format(assemname)
-    outFilepath="./tmp/{}/taxonomy.csv".format(assemname)
-    
-    scafname_lst=sorted([f.name for f in os.scandir(directory) if f.is_dir()])
-    thres=0.5
-    rank_lst=["superkingdom", "phylum", "class", "order", "family", "genus", "species"]
+def main(baseDirec, assemname_lst):
     dct_lst=[]
-    for scafname in scafname_lst:
-        inFilepath="{}/{}/taxonomy.csv".format(directory, scafname)
-        if os.path.exists(inFilepath):
-            df=pd.read_csv(inFilepath)
+    for assemname in assemname_lst:
+        assemDirec="{}/{}".format(baseDirec, assemname)
+        scaffname_lst=sorted([f.name for f in os.scandir(assemDirec) if f.is_dir()])
+        for scaffname in scaffname_lst:
+            inFilepath="{}/{}/taxonomy.csv".format(assemDirec, scaffname)
+            if os.path.exists(inFilepath):
+                print("START: process {}".format(inFilepath))
+                df=pd.read_csv(inFilepath)
 
-            dct={}
-            dct["assembly_name"]=assemname
-            dct["scaffold_name"]=scafname
-            total=df.shape[0]
+                dct={}
+                dct["assembly_name"]=assemname
+                dct["scaffold_name"]=scaffname
+                total=df.shape[0]
 
-            for rank in rank_lst:
-                m=stats.mode(df[rank])
-                taxid=m[0][0]
-                count=m[1][0]
-                if (taxid != 0) and (count > total * thres) :
-                    dct[rank]="{0}({1:.2f}%)".format(translator(taxid), count/total*100)
-                else:
-                    break
-            dct_lst.append(dct)
-    
+                thres=0.5
+                rank_lst=["superkingdom", "phylum", "class", "order", "family", "genus", "species"]
+                inProcess=True
+                for rank in rank_lst:
+                    if inProcess:
+                        m=stats.mode(df[rank])
+                        taxid=m[0][0]
+                        count=m[1][0]
+                        if (taxid != 0) and (count > total * thres) :
+                            dct[rank]="{0} ({1:.2f}%)".format(translator(taxid), count/total*100)
+                        else:
+                            dct[rank]=""
+                            inProcess=False
+                    else:
+                        dct[rank]=""
+                dct_lst.append(dct)
+            else:
+                print("WARN: not exists {}".format(inFilepath))
+        
     out_df=pd.DataFrame(dct_lst)
     out_df=out_df[["assembly_name", "scaffold_name"] + rank_lst]
+    outFilepath="{}/taxonomy.csv".format(baseDirec)
     out_df.to_csv(outFilepath, index=False)
+    print("DONE: output to {}".format(outFilepath))
 
 if __name__=="__main__":
-    assemname="spades_all"
-    main(assemname)
+    baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
+    listFilepath="assembly.list"
+    df=pd.read_csv(listFilepath, header=None)
+    assemname_lst=list(df[0])
+    main(baseDirec, assemname_lst)

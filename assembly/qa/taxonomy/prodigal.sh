@@ -20,7 +20,7 @@ do
     gffFilepath=${direc}/genes.gff
     proFilepath=${direc}/genes.faa
 
-    prodigal -i ${seqFilepath} \
-             -o ${gffFilepath} -f gff \
-             -a ${proFilepath}
+    time prodigal -i ${seqFilepath} \
+                  -o ${gffFilepath} -f gff \
+                  -a ${proFilepath}
 done

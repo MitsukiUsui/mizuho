@@ -7,7 +7,7 @@
 #SBATCH --input=none
 #SBATCH --output=./log/single_%j.out
 #SBATCH --error=./log/single_%j.err
-#SBATCH --mem=100g
+#SBATCH --mem=200g
 #SBATCH --time=0-12 
 
 left=${1}
@@ -16,7 +16,7 @@ outDirec=${3}
 
 echo ${left},${right},${outDirec}
 time ~/software/SPAdes-3.11.1-Linux/bin/spades.py \
-        --meta -t 10 -m 100 \
+        --meta -t 10 -m 200 \
         -1 ${left} \
         -2 ${right} \
         -o ${outDirec} \

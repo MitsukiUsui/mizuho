@@ -17,7 +17,7 @@ def main(listFilepath, baseDirec):
         print("START: {}".format(assemname))
         
         assemDirec="{}/{}".format(baseDirec, assemname)
-        os.makedirs(assemDirec)
+        os.makedirs(assemDirec, exist_ok = True)
         
         for i,record in enumerate(SeqIO.parse(inFilepath, "fasta")):
             if len(record.seq)<100000:
@@ -25,7 +25,7 @@ def main(listFilepath, baseDirec):
                 break
             scaffname="sc{0:04d}".format(i + 1)
             outDirec="{}/{}".format(assemDirec, scaffname)
-            os.makedirs(outDirec)
+            os.makedirs(outDirec, exist_ok = True)
             outFilepath="{}/seq.fna".format(outDirec)
             SeqIO.write(record, outFilepath, "fasta")
 
