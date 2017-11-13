@@ -15,50 +15,45 @@ def translator(taxid):
     except KeyError:
         return None
 
-def main(baseDirec, assemname_lst):
+def main(geneFilepath, scaffFilepath):
+    gene_df=pd.read_csv(geneFilepath)
+    
     dct_lst=[]
-    for assemname in assemname_lst:
-        assemDirec="{}/{}".format(baseDirec, assemname)
-        scaffname_lst=sorted([f.name for f in os.scandir(assemDirec) if f.is_dir()])
-        for scaffname in scaffname_lst:
-            inFilepath="{}/{}/taxonomy.csv".format(assemDirec, scaffname)
-            if os.path.exists(inFilepath):
-                print("START: process {}".format(inFilepath))
-                df=pd.read_csv(inFilepath)
+    for assemname in sorted(set(gene_df["assembly_name"])):
+        print("START: process {}".format(assemname))
+        assem_df=gene_df[gene_df["assembly_name"]==assemname]
+        for scaffname in sorted(set(assem_df["scaffold_name"])):
+            scaff_df=assem_df[assem_df["scaffold_name"]==scaffname]
+            
+            dct={}
+            dct["assembly_name"]=assemname
+            dct["scaffold_name"]=scaffname
+            total=scaff_df.shape[0]
 
-                dct={}
-                dct["assembly_name"]=assemname
-                dct["scaffold_name"]=scaffname
-                total=df.shape[0]
-
-                thres=0.5
-                rank_lst=["superkingdom", "phylum", "class", "order", "family", "genus", "species"]
-                inProcess=True
-                for rank in rank_lst:
-                    if inProcess:
-                        m=stats.mode(df[rank])
-                        taxid=m[0][0]
-                        count=m[1][0]
-                        if (taxid != 0) and (count > total * thres) :
-                            dct[rank]="{0} ({1:.2f}%)".format(translator(taxid), count/total*100)
-                        else:
-                            dct[rank]=""
-                            inProcess=False
+            thres=0.5
+            rank_lst=["superkingdom", "phylum", "class", "order", "family", "genus", "species"]
+            inProcess = True
+            for rank in rank_lst:
+                if inProcess:
+                    m=stats.mode(scaff_df[rank])
+                    taxid=m[0][0]
+                    count=m[1][0]
+                    if (taxid != 0) and (count > total * thres) :
+                        dct[rank]="{0} ({1:.2f}%)".format(translator(taxid), count/total*100)
                     else:
                         dct[rank]=""
-                dct_lst.append(dct)
-            else:
-                print("WARN: not exists {}".format(inFilepath))
+                        inProcess=False
+                else:
+                    dct[rank]=""
+            dct_lst.append(dct)
         
     out_df=pd.DataFrame(dct_lst)
     out_df=out_df[["assembly_name", "scaffold_name"] + rank_lst]
-    outFilepath="{}/taxonomy.csv".format(baseDirec)
-    out_df.to_csv(outFilepath, index=False)
-    print("DONE: output to {}".format(outFilepath))
+    out_df.to_csv(scaffFilepath, index=False)
+    print("DONE: output to {}".format(scaffFilepath))
 
 if __name__=="__main__":
     baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
-    listFilepath="assembly.list"
-    df=pd.read_csv(listFilepath, header=None)
-    assemname_lst=list(df[0])
-    main(baseDirec, assemname_lst)
+    geneFilepath="{}/mmseqs/taxonomy_gene.csv".format(baseDirec)
+    scaffFilepath="{}/mmseqs/taxonomy_scaffold.csv".format(baseDirec)
+    main(geneFilepath, scaffFilepath)

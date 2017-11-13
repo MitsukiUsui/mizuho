@@ -29,26 +29,16 @@ class DbController:
             return False
         return True
     
-    def __accession2taxid(self, accessionVersion):
+    def accession2taxid(self, accessionVersion):
         query = 'SELECT taxid FROM accession2taxid WHERE accession_version = "{}"'.format(accessionVersion)
         success = self.execute(query)
         if success:
             ret=self.cur.fetchone()
             if ret is not None:
                 return ret["taxid"]
-        return None
-        
-    def accession2taxid(self, accessionVersion_lst):
-        taxid_lst=[]
-        for accessionVersion in accessionVersion_lst:
-            result = self.__accession2taxid(accessionVersion)
-            if result is not None:
-                taxid_lst.append(result)
-            else:
-                taxid_lst.append(0)
-        assert len(taxid_lst)==len(accessionVersion_lst)
-        return taxid_lst
+        return 0
     
 if __name__=='__main__':
     dc = DbController("/work/GoryaninU/mitsuki/blast/accession2taxid/prot.accession2taxid.db")
-    print(dc.accession2taxid(["WP_091645391.1", "hoge", "WP_096446619.1"]))
+    print(dc.accession2taxid("WP_091645391.1"))
+    print(dc.accession2taxid("hoge"))
