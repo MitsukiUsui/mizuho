@@ -54,6 +54,7 @@ def main(geneFilepath, scaffFilepath):
 
 if __name__=="__main__":
     baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
-    geneFilepath="{}/mmseqs/taxonomy_gene.csv".format(baseDirec)
-    scaffFilepath="{}/mmseqs/taxonomy_scaffold.csv".format(baseDirec)
+    mmseqsDirec="{}/mmseqs_pool".format(baseDirec)
+    geneFilepath="{}/taxonomy_gene.csv".format(mmseqsDirec)
+    scaffFilepath="{}/taxonomy_scaffold.csv".format(mmseqsDirec)
     main(geneFilepath, scaffFilepath)

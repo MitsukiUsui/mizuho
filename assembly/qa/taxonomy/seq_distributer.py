@@ -30,6 +30,6 @@ def main(listFilepath, baseDirec):
             SeqIO.write(record, outFilepath, "fasta")
 
 if __name__=="__main__":
-    listFilepath="assembly.list"
+    listFilepath="../pool.list"
     baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
     main(listFilepath, baseDirec)

@@ -6,7 +6,7 @@ import pandas as pd
 
 def main(listFilepath, baseDirec, outFilepath):
     df=pd.read_csv(listFilepath, header=None)
-    print("START: merge to {}".format(outFilepath))
+    print("START: merge")
     with open(outFilepath, "w") as fo:
         for assemname in df[0]:
             assemDirec="{}/{}".format(baseDirec, assemname)
@@ -20,12 +20,13 @@ def main(listFilepath, baseDirec, outFilepath):
                     record.description=""
                     SeqIO.write(record, fo, "fasta")
             print("\t{}".format(assemDirec))
+    print("DONE: output to {}".format(outFilepath))
 
 if __name__=="__main__":
-    listFilepath="assembly.list"
+    listFilepath="../pool.list"
     baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
     
-    outDirec="{}/mmseqs".format(baseDirec)
+    outDirec="{}/mmseqs_pool".format(baseDirec)
     os.makedirs(outDirec, exist_ok=True)
     outFilepath="{}/merge.faa".format(outDirec)
     main(listFilepath, baseDirec, outFilepath)

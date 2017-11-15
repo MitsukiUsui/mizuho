@@ -4,4 +4,4 @@ do
     assemname=`echo ${line}|cut -d "," -f1`
     assemDirec=${baseDirec}/${assemname}
     sbatch prodigal.sh ${assemDirec}
-done < assembly.list
+done < ../pool.list

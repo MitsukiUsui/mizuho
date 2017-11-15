@@ -99,6 +99,7 @@ def main(bestFilepath, geneFilepath):
     
 if __name__=="__main__":
     baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
-    bestFilepath="{}/mmseqs/result.best".format(baseDirec)
-    geneFilepath="{}/mmseqs/taxonomy_gene.csv".format(baseDirec)
+    mmseqsDirec="{}/mmseqs_pool".format(baseDirec)
+    bestFilepath="{}/result.best".format(mmseqsDirec)
+    geneFilepath="{}/taxonomy_gene.csv".format(mmseqsDirec)
     main(bestFilepath, geneFilepath)
