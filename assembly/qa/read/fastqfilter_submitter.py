@@ -13,7 +13,7 @@ def main(listFilepath):
         cr="{}/{}_R2.00.0_0.cor.fastq.gz".format(correctDirec, assemname)
         fl="{}/{}_R1.fastq".format(filterDirec, assemname)
         fr="{}/{}_R2.fastq".format(filterDirec, assemname)
-        cmd="sbatch filter.sh {} {} {} {}".format(cl, cr, fl, fr)
+        cmd="sbatch fastqfilter.sh {} {} {} {}".format(cl, cr, fl, fr)
         myrun(cmd)
 
 if __name__=="__main__":
