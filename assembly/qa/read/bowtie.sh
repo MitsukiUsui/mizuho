@@ -26,10 +26,10 @@ do
     mkdir -p ${dir}
 done
 
-#module load bowtie2
-#time bowtie2-build ${scaffoldFilepath} ${dbFilepath}
-#time bowtie2 --threads 8 --maxins 1000 \
-#             -x ${dbFilepath} \
-#             -1 ${leftFilepath} -2 ${rightFilepath} \
-#             -S ${samFilepath}
+module load bowtie2
+time bowtie2-build ${scaffoldFilepath} ${dbFilepath}
+time bowtie2 --threads 8 --maxins 1000 \
+             -x ${dbFilepath} \
+             -1 ${leftFilepath} -2 ${rightFilepath} \
+             -S ${samFilepath}
 cut -f 9 ${samFilepath} |sed '/^\s*$/d' | sort -n | uniq -c | sed -e 's/ *//' -e 's/ /,/' > ${insertFilepath}
