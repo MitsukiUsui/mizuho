@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 from Bio import SeqIO
 import pandas as pd
 
@@ -23,10 +24,9 @@ def main(listFilepath, baseDirec, outFilepath):
     print("DONE: output to {}".format(outFilepath))
 
 if __name__=="__main__":
-    listFilepath="../pool.list"
-    baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
-    
-    outDirec="{}/mmseqs_pool".format(baseDirec)
-    os.makedirs(outDirec, exist_ok=True)
-    outFilepath="{}/merge.faa".format(outDirec)
+    listFilepath=sys.argv[1]
+    baseDirec=sys.argv[2]
+    mmseqsDirec="{}/mmseqs".format(baseDirec)
+    os.makedirs(mmseqsDirec, exist_ok=True)
+    outFilepath="{}/merge.faa".format(mmseqsDirec)
     main(listFilepath, baseDirec, outFilepath)

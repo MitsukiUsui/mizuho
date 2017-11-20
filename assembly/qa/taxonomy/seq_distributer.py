@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import pandas as pd
 from Bio import SeqIO
 
@@ -30,6 +31,8 @@ def main(listFilepath, baseDirec):
             SeqIO.write(record, outFilepath, "fasta")
 
 if __name__=="__main__":
-    listFilepath="../pool.list"
-    baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
+    #listFilepath="../pool.list"
+    #baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
+    listFilepath=sys.argv[1]
+    baseDirec=sys.argv[2]
     main(listFilepath, baseDirec)

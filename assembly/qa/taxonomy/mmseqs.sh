@@ -10,8 +10,10 @@
 #SBATCH --mem=250g
 #SBATCH --time=0-05 
 
-baseDirec=/work/GoryaninU/mitsuki/out/taxonomy
-mmseqsDirec=${baseDirec}/mmseqs_pool
+baseDirec=${1}
+mmseqsDirec=${baseDirec}/mmseqs
+
+echo ${mmseqsDirec}
 
 seqFilepath=${mmseqsDirec}/merge.faa
 queryDb=${mmseqsDirec}/query
@@ -19,10 +21,9 @@ resultDb=${mmseqsDirec}/result
 resultTsv=${mmseqsDirec}/result.m8
 bestTsv=${mmseqsDirec}/result.best
 tmpDirec=${mmseqsDirec}/tmp
-
+mkdir -p ${tmpDirec}
 targetDb="/work/GoryaninU/mitsuki/blast/nr2/targetDB"
 
-mkdir -p ${tmpDirec}
 time -p {
     mmseqs createdb ${seqFilepath} ${queryDb}
     mmseqs search -s 1 --threads 12 ${queryDb} ${targetDb} ${resultDb} ${tmpDirec}
