@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-import pickle
+import sys
 from ete3 import NCBITaxa
-from collections import Counter
 import pandas as pd
 
 ncbi = NCBITaxa()
@@ -98,7 +97,8 @@ def main(bestFilepath, geneFilepath):
     print("DONE: output to {}".format(geneFilepath))
     
 if __name__=="__main__":
-    baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
-    bestFilepath="{}/mmseqs/result.best".format(baseDirec)
-    geneFilepath="{}/mmseqs/taxonomy_gene.csv".format(baseDirec)
+    baseDirec=sys.argv[1]
+    mmseqsDirec="{}/mmseqs".format(baseDirec)
+    bestFilepath="{}/result.best".format(mmseqsDirec)
+    geneFilepath="{}/taxonomy_gene.csv".format(mmseqsDirec)
     main(bestFilepath, geneFilepath)

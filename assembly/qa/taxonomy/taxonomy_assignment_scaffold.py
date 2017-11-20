@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import os
 import pandas as pd
 from scipy import stats
@@ -53,7 +54,8 @@ def main(geneFilepath, scaffFilepath):
     print("DONE: output to {}".format(scaffFilepath))
 
 if __name__=="__main__":
-    baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
-    geneFilepath="{}/mmseqs/taxonomy_gene.csv".format(baseDirec)
-    scaffFilepath="{}/mmseqs/taxonomy_scaffold.csv".format(baseDirec)
+    baseDirec=sys.argv[1]
+    mmseqsDirec="{}/mmseqs".format(baseDirec)
+    geneFilepath="{}/taxonomy_gene.csv".format(mmseqsDirec)
+    scaffFilepath="{}/taxonomy_scaffold.csv".format(mmseqsDirec)
     main(geneFilepath, scaffFilepath)

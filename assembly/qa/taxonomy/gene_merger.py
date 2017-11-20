@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 from Bio import SeqIO
 import pandas as pd
 
 def main(listFilepath, baseDirec, outFilepath):
     df=pd.read_csv(listFilepath, header=None)
-    print("START: merge to {}".format(outFilepath))
+    print("START: merge")
     with open(outFilepath, "w") as fo:
         for assemname in df[0]:
             assemDirec="{}/{}".format(baseDirec, assemname)
@@ -20,12 +21,12 @@ def main(listFilepath, baseDirec, outFilepath):
                     record.description=""
                     SeqIO.write(record, fo, "fasta")
             print("\t{}".format(assemDirec))
+    print("DONE: output to {}".format(outFilepath))
 
 if __name__=="__main__":
-    listFilepath="assembly.list"
-    baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
-    
-    outDirec="{}/mmseqs".format(baseDirec)
-    os.makedirs(outDirec, exist_ok=True)
-    outFilepath="{}/merge.faa".format(outDirec)
+    listFilepath=sys.argv[1]
+    baseDirec=sys.argv[2]
+    mmseqsDirec="{}/mmseqs".format(baseDirec)
+    os.makedirs(mmseqsDirec, exist_ok=True)
+    outFilepath="{}/merge.faa".format(mmseqsDirec)
     main(listFilepath, baseDirec, outFilepath)
