@@ -10,14 +10,21 @@
 #SBATCH --mem=100g
 #SBATCH --time=0-12 
 
+FORCE_MODE=false
+
 left=${1}
 right=${2}
 outDirec=${3}
 
 echo ${left},${right},${outDirec}
-time ~/software/SPAdes-3.11.1-Linux/bin/spades.py \
-        --meta -t 12 -m 100 \
-        -1 ${left} \
-        -2 ${right} \
-        -o ${outDirec} \
-        -k 21,33,55,77,99,127
+scaffFilepath=${outDirec}/scaffolds.fasta
+if [ "$FORCE_MODE" = false ] && [ -e ${scaffFilepath} ]; then
+    echo "PASS: scaffolds.fasta already exists"
+else
+    time ~/software/SPAdes-3.11.1-Linux/bin/spades.py \
+            --meta -t 12 -m 100 \
+            -1 ${left} \
+            -2 ${right} \
+            -o ${outDirec} \
+            -k 21,33,55,77,99,127
+fi

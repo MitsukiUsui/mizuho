@@ -12,7 +12,6 @@
 FORCE_MODE=false
 
 argFilepath=${1}
-SLURM_ARRAY_TASK_ID=1
 line=`awk -v line=$SLURM_ARRAY_TASK_ID '{if (NR == line) print$0}' ${argFilepath}`
 
 module load samtools

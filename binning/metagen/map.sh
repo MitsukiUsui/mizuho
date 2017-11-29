@@ -30,7 +30,7 @@ echo "START: map ${leftFilepath} to ${dbFilepath}"
 if  [ "$FORCE_MODE" = false ] && [ -e ${samFilepath} ]; then
     echo "PASS: sam already exists"
 else
-    time bowtie2 --threads 8 --maxins 1000 \
+    time bowtie2 --threads 8 --maxins 1000 -a \
                  -x ${dbFilepath} \
                  -1 ${leftFilepath} -2 ${rightFilepath} \
                  -S ${samFilepath}

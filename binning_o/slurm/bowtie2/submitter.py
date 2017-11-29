@@ -4,7 +4,7 @@ from myutil.myutil import myrun
 
 def main(numBins):
     for binId in range(1, numBins + 1):
-        binDirec="/work/GoryaninU/mitsuki/out/binning/bin/bin{:03d}".format(binId)
+        binDirec="/work/GoryaninU/mitsuki/out/binning/distribute/bin{:03d}".format(binId)
         scaffFilepath="{}/scaffolds.fasta".format(binDirec)
         leftFilepath="{}/bin{:03d}_R1.fastq".format(binDirec, binId)
         rightFilepath="{}/bin{:03d}_R2.fastq".format(binDirec, binId)
@@ -14,5 +14,5 @@ def main(numBins):
         myrun(cmd)
             
 if __name__=="__main__":
-    numBins=184
+    numBins=173
     main(numBins)

@@ -1,5 +1,4 @@
-binDirec=/work/GoryaninU/mitsuki/mizuho/dna
-numBins=184
+numBins=173
 for binId in `seq -f %03g 1 ${numBins}`
 do
     outDirec=/work/GoryaninU/mitsuki/out/spades/mizuho/bin/bin${binId}

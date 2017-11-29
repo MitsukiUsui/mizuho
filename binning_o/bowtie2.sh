@@ -21,7 +21,7 @@ echo ${scaffoldFilepath},${dbFilepath},${leftFilepath},${rightFilepath},${samFil
 
 module load samtools
 time bowtie2-build --threads 8 ${scaffoldFilepath} ${dbFilepath}
-time bowtie2 --threads 8 --maxins 1000 \
+time bowtie2 --threads 8 --maxins 1000 -a\
              -x ${dbFilepath} \
              -1 ${leftFilepath} -2 ${rightFilepath} \
              -S ${samFilepath}
