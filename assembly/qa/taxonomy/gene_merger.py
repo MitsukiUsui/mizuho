@@ -6,16 +6,16 @@ from Bio import SeqIO
 import pandas as pd
 
 def main(listFilepath, baseDirec, outFilepath):
-    df=pd.read_csv(listFilepath, header=None)
+    df=pd.read_csv(listFilepath)
     print("START: merge")
     with open(outFilepath, "w") as fo:
-        for assemname in df[0]:
-            assemDirec="{}/{}".format(baseDirec, assemname)
-            scaffname_lst=sorted([f.name for f in os.scandir(assemDirec) if f.is_dir()])
-            for scaffname in scaffname_lst:
-                inFilepath="{}/{}/genes.faa".format(assemDirec, scaffname)
+        for assemName in df["assembly_name"]:
+            assemDirec="{}/{}".format(baseDirec, assemName)
+            scaffName_lst=sorted([f.name for f in os.scandir(assemDirec) if f.is_dir()])
+            for scaffName in scaffName_lst:
+                inFilepath="{}/{}/genes.faa".format(assemDirec, scaffName)
                 for i,record in enumerate(SeqIO.parse(inFilepath, "fasta")):
-                    seqId="{0}:{1}:{2:04d}".format(assemname, scaffname, i + 1)
+                    seqId="{0}:{1}:{2:04d}".format(assemName, scaffName, i + 1)
                     record.id=seqId
                     record.name=seqId
                     record.description=""

@@ -7,32 +7,30 @@ from Bio import SeqIO
 
 def main(listFilepath, baseDirec):
     """
-    listFilepath: assemname,scaffoldFilepath
-    baseDirec: each scaffold will be output to ${baseDirec}/${assemname}/${scaffname}/seq.fna
+    listFilepath: assemName,scaffoldFilepath
+    baseDirec: each scaffold will be output to ${baseDirec}/${assemName}/${scaffname}/seq.fna
     """
 
-    df=pd.read_csv(listFilepath, header=None)
+    df=pd.read_csv(listFilepath)
     for _,row in df.iterrows():
-        assemname=row[0]
-        inFilepath=row[1]
-        print("START: {}".format(assemname))
+        assemName=row["assembly_name"]
+        inFilepath=row["scaffold_filepath"]
+        print("START: {}".format(assemName))
         
-        assemDirec="{}/{}".format(baseDirec, assemname)
+        assemDirec="{}/{}".format(baseDirec, assemName)
         os.makedirs(assemDirec, exist_ok = True)
         
         for i,record in enumerate(SeqIO.parse(inFilepath, "fasta")):
             if len(record.seq)<100000:
-                print("\toutput {} scaffolds".format(i))
+                print("\tDONE: output {} scaffolds".format(i))
                 break
-            scaffname="sc{0:04d}".format(i + 1)
+            scaffname="sc{0:05d}".format(i + 1)
             outDirec="{}/{}".format(assemDirec, scaffname)
             os.makedirs(outDirec, exist_ok = True)
             outFilepath="{}/seq.fna".format(outDirec)
             SeqIO.write(record, outFilepath, "fasta")
 
 if __name__=="__main__":
-    #listFilepath="../pool.list"
-    #baseDirec="/work/GoryaninU/mitsuki/out/taxonomy"
     listFilepath=sys.argv[1]
     baseDirec=sys.argv[2]
     main(listFilepath, baseDirec)
