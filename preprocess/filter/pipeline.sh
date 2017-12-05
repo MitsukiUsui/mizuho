@@ -57,31 +57,31 @@ fi
 #--------------------------------------------------------------------------------
 # get stats (row)
 #--------------------------------------------------------------------------------
-#get_stat ${rowLeftFilepath}
-#get_stat ${rowRightFilepath}
+get_stat ${rowLeftFilepath}
+get_stat ${rowRightFilepath}
 
 #--------------------------------------------------------------------------------
 # trim adapter & dirty ends
 #--------------------------------------------------------------------------------
 echo "START: trim ${rowLeftFilepath}, ${rowRightFilepath}"
 
-#tmpLeftFilepath=${trimLeftFilepath/.fastq/.tmp.fastq}
-#tmpRightFilepath=${trimRightFilepath/.fastq/.tmp.fastq}
-#
-#time cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
-#              -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
-#              -o ${tmpLeftFilepath} \
-#              -p ${tmpRightFilepath} \
-#              --minimum-length 100 \
-#              ${rowLeftFilepath} ${rowRightFilepath}
-#time cutadapt --cut 10 --cut -5 \
-#              -o ${trimLeftFilepath} ${tmpLeftFilepath}
-#time cutadapt --cut 10 --cut -5 \
-#              -o ${trimRightFilepath} ${tmpRightFilepath}
-#rm ${tmpLeftFilepath}
-#rm ${tmpRightFilepath}
-#get_stat ${trimLeftFilepath}
-#get_stat ${trimRightFilepath}
+tmpLeftFilepath=${trimLeftFilepath/.fastq/.tmp.fastq}
+tmpRightFilepath=${trimRightFilepath/.fastq/.tmp.fastq}
+
+time cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
+              -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+              -o ${tmpLeftFilepath} \
+              -p ${tmpRightFilepath} \
+              --minimum-length 100 \
+              ${rowLeftFilepath} ${rowRightFilepath}
+time cutadapt --cut 10 --cut -5 \
+              -o ${trimLeftFilepath} ${tmpLeftFilepath}
+time cutadapt --cut 10 --cut -5 \
+              -o ${trimRightFilepath} ${tmpRightFilepath}
+rm ${tmpLeftFilepath}
+rm ${tmpRightFilepath}
+get_stat ${trimLeftFilepath}
+get_stat ${trimRightFilepath}
 
 #--------------------------------------------------------------------------------
 # read correction by BayesHammer in metaSPAdes
