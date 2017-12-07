@@ -1,0 +1,20 @@
+[
+  {
+    orientation: "fr",
+    type: "paired-end",
+    left reads: [
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode1_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode3_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode5_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode7_R1.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode8_R1.fastq",
+    ],
+    right reads: [
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode1_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode3_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode5_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode7_R2.fastq",
+      "/work/GoryaninU/mitsuki/mizuho/dna/filter/MFC1_36m_anode8_R2.fastq",
+    ]
+  }
+]
