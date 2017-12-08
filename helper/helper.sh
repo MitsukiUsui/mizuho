@@ -3,10 +3,16 @@
 module load samtools
 
 sam2bam () {
-    samFilepath=${1}
+    samFilepath=${1} ##WARNING only works with `sam2bam ${samFilepath} (-d)`
+    getopts "d" opts
+
     bamFilepath=${samFilepath/.sam/.bam}
     echo "START: output ${bamFilepath} from ${samFilepath}"
     samtools view -Sb ${samFilepath} | samtools sort -o ${bamFilepath}
     samtools index ${bamFilepath}
-    rm ${samFilepath} #sam is too large for storing information
+
+    if [ "$opts" = d ]; then
+        rm ${samFilepath}
+        echo "DONE: delete ${samFilepath}"
+    fi
 }

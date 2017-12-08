@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import pandas as pd
 import sqlite3
 from Bio import SeqIO
@@ -68,7 +69,7 @@ def parse_sam(samFilepath, read2id, scaff2id):
     sam_df=sam_df[["read_id", "scaff_id"]]
     return sam_df
         
-def main(dbFilepath, fastqFilepath, scaffFilepath, samFilepath):
+def main(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath, bwaFilepath):
     mdc=MapDbController(dbFilepath)
    
     print("START: parse {}".format(fastqFilepath))
@@ -83,17 +84,23 @@ def main(dbFilepath, fastqFilepath, scaffFilepath, samFilepath):
     mdc.delete("scaffold")
     scaff_df.to_sql("scaffold", mdc.con, if_exists="append", index=False)
     
-    print("START: parse {}".format(samFilepath))
-    sam_df = parse_sam(samFilepath, read2id, scaff2id)
-    print("START: load {} records to {}".format(sam_df.shape[0], dbFilepath))
+    print("START: parse {}".format(bowtieFilepath))
+    bowtie_df = parse_sam(bowtieFilepath, read2id, scaff2id)
+    print("START: load {} records to {}".format(bowtie_df.shape[0], dbFilepath))
     mdc.delete("bowtie")
-    sam_df.to_sql("bowtie", mdc.con, if_exists="append", index=False)
+    bowtie_df.to_sql("bowtie", mdc.con, if_exists="append", index=False)
     
+    print("START: parse {}".format(bwaFilepath))
+    bwa_df = parse_sam(bwaFilepath, read2id, scaff2id)
+    print("START: load {} records to {}".format(bwa_df.shape[0], dbFilepath))
+    mdc.delete("bwa")
+    bwa_df.to_sql("bwa", mdc.con, if_exists="append", index=False)
 
 if __name__=="__main__":
-    dbFilepath="db.sq3"
-    fastqFilepath="/work/GoryaninU/mitsuki/mizuho/dna/trim/MFC1_06m_anode_felt_1_R2.fastq"
-    scaffFilepath="/work/GoryaninU/mitsuki/out/spades/mizuho/MFC1_06m_anode_felt_1/scaffolds.long.fasta"
-    samFilepath="/work/GoryaninU/mitsuki/out/bowtie/mizuho/MFC1_06m_anode_felt_1.sam"
-    main(dbFilepath, fastqFilepath, scaffFilepath, samFilepath)
+    dbFilepath=sys.argv[1]
+    fastqFilepath=sys.argv[2]
+    scaffFilepath=sys.argv[3]
+    bowtieFilepath=sys.argv[4]
+    bwaFilepath=sys.argv[5]
+    main(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath, bwaFilepath)
     
