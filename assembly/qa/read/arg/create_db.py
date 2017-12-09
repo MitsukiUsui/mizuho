@@ -17,7 +17,7 @@ for assemName in pool_lst:
         fastqFilepath="/work/GoryaninU/mitsuki/mizuho/dna/filter/{}_R1.fastq".format(sampleId)
         bowtieFilepath="/work/GoryaninU/mitsuki/out/map/bowtie/sam/{}/{}.sam".format(assemName, sampleId)
         bwaFilepath="/work/GoryaninU/mitsuki/out/map/bwa/sam/{}/{}.sam".format(assemName, sampleId)
-#        print("{},{},{},{},{}".format(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath, bwaFilepath))
+        print("{},{},{},{},{}".format(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath, bwaFilepath))
 
 pairFilepath="pair.list"
 pair_df=pd.read_csv(pairFilepath)
