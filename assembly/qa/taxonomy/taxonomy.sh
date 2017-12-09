@@ -4,7 +4,7 @@
 # configuration
 #--------------------------------------------------------------------------------
 listFilepath=assembly.list
-baseDirec=/work/GoryaninU/mitsuki/out/taxonomy/demo
+baseDirec=/work/GoryaninU/mitsuki/out/taxonomy/MFC1_36m_anode
 
 #--------------------------------------------------------------------------------
 # distribute each scaffold
