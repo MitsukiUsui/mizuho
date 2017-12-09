@@ -5,30 +5,7 @@ import pandas as pd
 import sqlite3
 from Bio import SeqIO
 
-from myutil.myutil import DbController
-        
-class MapDbController(DbController):
-    def __init__(self, dbFilepath):
-        super().__init__(dbFilepath)
-    
-    def get_count_read(self):
-        return self.count_row("read")
-    
-    def bin_count(self, table):
-        """
-        return count table
-        """
-        
-        query = ("SELECT bin_id, count(DISTINCT read_id) as read_count " \
-                +"FROM {0} INNER JOIN bin on {0}.scaff_id = bin.scaff_id "\
-                +"GROUP BY bin_id").format(table)
-        
-        success = self.execute(query)
-        if success:
-            count_df=pd.DataFrame(self.cur.fetchall())
-            return count_df
-        else:
-            return None
+from MapDbController import MapDbContoller
 
 def parse_fastq(fastqFilepath):
     dct_lst=[]
