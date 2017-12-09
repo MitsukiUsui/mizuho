@@ -14,3 +14,4 @@ tmp/
 !*.sh
 !*.md
 !*.yaml
+!*.sql
