@@ -12,21 +12,26 @@
 
 baseDirec=${1}
 mmseqsDirec=${baseDirec}/mmseqs
-
-echo ${mmseqsDirec}
-
 seqFilepath=${mmseqsDirec}/merge.faa
 queryDb=${mmseqsDirec}/query
 resultDb=${mmseqsDirec}/result
 resultTsv=${mmseqsDirec}/result.m8
 bestTsv=${mmseqsDirec}/result.best
 tmpDirec=${mmseqsDirec}/tmp
-mkdir -p ${tmpDirec}
 targetDb="/work/GoryaninU/mitsuki/blast/nr2/targetDB"
 
-time -p {
-    mmseqs createdb ${seqFilepath} ${queryDb}
-    mmseqs search -s 1 --threads 12 ${queryDb} ${targetDb} ${resultDb} ${tmpDirec}
-    mmseqs convertalis --threads 12 ${queryDb} ${targetDb} ${resultDb} ${resultTsv}
-    sort -k1,1 -k12,12nr -k11,11n  ${resultTsv} | sort -u -k1,1 --merge > ${bestTsv}
-}
+FORCE_MODE=false
+forceFilepath=${bestTsv}
+if [ "$FORCE_MODE" = false ] && [ -e ${forceFilepath} ]; then
+    echo "PASS: target file already exists"
+else
+    echo "START: ${mmseqsDirec}"
+
+    mkdir -p ${tmpDirec}
+    time -p {
+        mmseqs createdb ${seqFilepath} ${queryDb}
+        mmseqs search -s 1 --threads 12 ${queryDb} ${targetDb} ${resultDb} ${tmpDirec}
+        mmseqs convertalis --threads 12 ${queryDb} ${targetDb} ${resultDb} ${resultTsv}
+        sort -k1,1 -k12,12nr -k11,11n  ${resultTsv} | sort -u -k1,1 --merge > ${bestTsv}
+    }
+fi

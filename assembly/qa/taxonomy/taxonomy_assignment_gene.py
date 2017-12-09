@@ -28,8 +28,8 @@ def get_lineage(taxid, rank_lst = None):
         return dict()
 
 def get_taxid_lst(accessionVersion_lst):
-    from dbcontroller import DbController
-    dc = DbController("/work/GoryaninU/mitsuki/blast/accession2taxid/prot.accession2taxid.db")
+    from TaxDbController import TaxDbController
+    tdc = TaxDbController("/work/GoryaninU/mitsuki/blast/accession2taxid/prot.accession2taxid.db")
     
     #  create accession2taxid lookup dictionaly first
     accessionVersion_set=set(accessionVersion_lst)
@@ -41,7 +41,7 @@ def get_taxid_lst(accessionVersion_lst):
         if _>=border:
             border+=batch
             print(".", end="", flush=True)
-        accession2taxid[accessionVersion]=dc.accession2taxid(accessionVersion)
+        accession2taxid[accessionVersion]=tdc.accession2taxid(accessionVersion)
     print()
     
     taxid_lst=[accession2taxid[accessionVersion] for accessionVersion in accessionVersion_lst]
@@ -98,7 +98,6 @@ def main(bestFilepath, geneFilepath):
     
 if __name__=="__main__":
     baseDirec=sys.argv[1]
-    mmseqsDirec="{}/mmseqs".format(baseDirec)
-    bestFilepath="{}/result.best".format(mmseqsDirec)
-    geneFilepath="{}/taxonomy_gene.csv".format(mmseqsDirec)
+    bestFilepath="{}/mmseqs/result.best".format(baseDirec)
+    geneFilepath="{}/taxonomy_gene.csv".format(baseDirec)
     main(bestFilepath, geneFilepath)
