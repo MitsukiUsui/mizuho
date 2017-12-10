@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
+import sys
 import pandas as pd
 from Bio import SeqIO
 import os
 
 def get_num_seqs(fastqFilepath):
-    statsFilepath=fastqFilepath.replace(".fastq", ".stats")
+    statsFilepath=fastqFilepath.replace(".fastq", ".stat")
     stats_df=pd.read_csv(statsFilepath, delimiter='\t')
     return stats_df["num_seqs"][0]
 
-def main(sampleListFilepath, assemListFilepath, metagenDirec):
+def main(metagenDirec, sampleListFilepath, assemListFilepath):
     """
     output Countigs.fasta, count-map.tsv, reads_info.txt for MetaGen.R
     """
@@ -32,26 +33,35 @@ def main(sampleListFilepath, assemListFilepath, metagenDirec):
             seqFilepath=row[1]
             contigCount=0
             for record in SeqIO.parse(seqFilepath, "fasta"):
-                contigCount += 1
-                SeqIO.write(record, fo, "fasta")
+                if len(record.seq) >= 10000:
+                    contigCount += 1
+                    SeqIO.write(record, fo, "fasta")
+                else:
+                    break
             contigCount_lst.append(contigCount)
             print("\tDONE: {} seqs from {}".format(contigCount, seqFilepath))
     print("DONE: output {}".format(contigFilepath))
 
     # summarize .count information to table_df
-    print("START: summarize count")
-    table_df=pd.DataFrame(index=range(sum(contigCount_lst)))
-    for _, row in sample_df.iterrows():
-        sampleId=row["sample_id"]
-        table_lst=[]
-        for _, row in assem_df.iterrows():
-            assemName=row["assembly_name"]
-            countFilepath="{}/bowtie/map/{}/{}.count".format(metagenDirec, sampleId, assemName)
+    column_lst=list(sample_df["sample_id"])
+    table_df=pd.DataFrame(columns=column_lst)
+
+    for i, assemName in enumerate(assem_df["assembly_name"]):
+        subTable_df=pd.DataFrame(columns=column_lst)
+        for sampleId in sample_df["sample_id"]:
+            countFilepath="{}/bowtie/map/{}/{}.count".format(metagenDirec, assemName, sampleId)
             count_df=pd.read_csv(countFilepath, delimiter="\t", header=None)
-            assert count_df.shape[0] == contigCount_lst[_] + 1 # +1 for unmapped last line 
-            table_lst = table_lst + list(count_df[2][:-1])
-        table_df[sampleId]=table_lst
-        print("\tDONE: {}".format(sampleId))
+
+            count_lst=[]
+            for _, row in count_df.iterrows():
+                if row[1]>=10000:
+                    count_lst.append(row[2])
+                else:
+                    break ##assuming count file is descending order
+            assert len(count_lst)==contigCount_lst[i]
+            subTable_df[sampleId]=count_lst
+        table_df=pd.concat([table_df, subTable_df])
+    table_df=table_df[column_lst].astype(int)
     # output table_df to count-map.tsv
     table_df.to_csv(tableFilepath, index=False, sep='\t')
     print("DONE: output {}".format(tableFilepath))
@@ -73,7 +83,7 @@ def main(sampleListFilepath, assemListFilepath, metagenDirec):
     print("DONE: output {}".format(infoFilepath))
 
 if __name__=="__main__":
-    sampleListFilepath="./list/sample.list"
-    assemListFilepath="./list/assembly.list"
-    metagenDirec="/work/GoryaninU/mitsuki/out/binning/metagen"
-    main(sampleListFilepath, assemListFilepath, metagenDirec)
+    baseDirec=sys.argv[1]
+    sampleListFilepath="sample.list"
+    assemListFilepath="assembly.list"
+    main(baseDirec, sampleListFilepath, assemListFilepath)

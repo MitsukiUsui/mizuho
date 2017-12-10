@@ -13,28 +13,27 @@
 FORCE_MODE=false
 
 argFilepath=${1}
-line=`awk -v line=$SLURM_ARRAY_TASK_ID '{if (NR == line) print$0}' ${argFilepath}`
-
+if [ -z ${SLURM_ARRAY_TASK_ID+x} ]; then lineNum=1; else lineNum=${SLURM_ARRAY_TASK_ID}; fi;
+line=`awk -v lineNum=$lineNum '{if (NR == lineNum) print $0}' ${argFilepath}`
 dbFilepath=`echo ${line} | cut -d ',' -f1`
 leftFilepath=`echo ${line} | cut -d ',' -f2`
 rightFilepath=`echo ${line} | cut -d ',' -f3`
 samFilepath=`echo ${line} | cut -d ',' -f4`
-sortFilepath=${samFilepath/.sam/.bam}
-countFilepath=${samFilepath/.sam/.count}
 
-dir=`dirname ${samFilepath}`
-mkdir -p ${dir}
 module load samtools
 
-echo "START: map ${leftFilepath} to ${dbFilepath}"
-if  [ "$FORCE_MODE" = false ] && [ -e ${samFilepath} ]; then
-    echo "PASS: sam already exists"
-else
-    time bowtie2 --threads 8 --maxins 1000 -a \
-                 -x ${dbFilepath} \
-                 -1 ${leftFilepath} -2 ${rightFilepath} \
-                 -S ${samFilepath}
-    samtools view -Sb ${samFilepath} | samtools sort -o ${sortFilepath}
-    samtools index ${sortFilepath}
-    samtools idxstats ${sortFilepath} > ${countFilepath}
+FORCE_MODE=false
+forceFilepath=${samFilepath}
+if [ "$FORCE_MODE" = false ] && [ -e ${forceFilepath} ]; then
+    echo "PASS: target file already exists"
+    exit
 fi
+
+mkdir -p `dirname ${samFilepath}`
+time bowtie2 --threads 8 --maxins 1000 \
+             -x ${dbFilepath} \
+             -1 ${leftFilepath} -2 ${rightFilepath} \
+             -S ${samFilepath}
+source ~/mizuho/helper/helper.sh
+sam2bam ${samFilepath}
+samtools idxstats ${samFilepath/.sam/.bam} > ${samFilepath/.sam/.count}

@@ -1,31 +1,48 @@
 #!/bin/bash
 
 #--------------------------------------------------------------------------------
+# configuration
+#--------------------------------------------------------------------------------
+baseDirec=/work/GoryaninU/mitsuki/out/metagen/MFC1_36m_anode
+
+#--------------------------------------------------------------------------------
 # create bowtie index for each scaffolds
 #--------------------------------------------------------------------------------
-arg1=arg1.list
-./arg/index.py > ${arg1}
-numJobs1=`grep -c '' ${arg1}`
-jobId1=`sbatch --parsable --array=1-${numJobs1} index.sh ${arg1}`
-echo "submitted "${numJobs1}" jobs with job_id="${jobId1}
+cmd=index.sh
+argCmd="./arg/${cmd/.sh/.py} ${baseDirec}"
+argFilepath=./arg/${cmd/.sh/.list}
+eval ${argCmd} > ${argFilepath}
+numJobs=`grep -c '' ${argFilepath}`
+jobId=`sbatch --parsable --array=1-${numJobs} ${cmd} ${argFilepath}`
+echo "submitted ${numJobs} jobs with job_id=${jobId}"
 
 #--------------------------------------------------------------------------------
 # map ehach samples for each scaffolds
 #--------------------------------------------------------------------------------
-arg2=arg2.list
-./arg/map.py > ${arg2}
-numJobs2=`grep -c '' ${arg2}`
-jobId2=`sbatch --parsable --array=1-${numJobs2} --dependency=afterok:${jobId1} map.sh ${arg2}`
-echo "submitted "${numJobs2}" jobs with job_id="${jobId2}", dependency="${jobId1}
+cmd=map.sh
+argCmd="./arg/${cmd/.sh/.py} ${baseDirec}"
+argFilepath=./arg/${cmd/.sh/.list}
+eval ${argCmd} > ${argFilepath}
+numJobs=`grep -c '' ${argFilepath}`
+prevJobId=${jobId}
+jobId=`sbatch --parsable --array=1-${numJobs} --dependency=afterok:${prevJobId} ${cmd} ${argFilepath}`
+echo "submitted ${numJobs} jobs with job_id=${jobId}, dependency=${prevJobId}"
+
 
 #--------------------------------------------------------------------------------
 # summarize information for metagen
 #--------------------------------------------------------------------------------
-jobId3=`sbatch --parsable --dependency=afterok:${jobId2} prepare.sh`
-echo "submitted with job_id="${jobId3}", dependency="${jobId2}
-
-#--------------------------------------------------------------------------------
-# main
-#--------------------------------------------------------------------------------
-jobId4=`sbatch --parsable --dependency=afterok:${jobId3} metagen.sh`
-echo "submitted with job_id="${jobId4}", dependency="${jobId3}
+cmd=prepare.sh
+numJobs=1
+prevJobId=${jobId}
+jobId=`sbatch --parsable --dependency=afterok:${prevJobId} ${cmd} ${baseDirec}`
+echo "submitted ${numJobs} jobs with job_id=${jobId}, dependency=${prevJobId}"
+#
+##--------------------------------------------------------------------------------
+## main
+##--------------------------------------------------------------------------------
+cmd=metagen.sh
+numJobs=1
+prevJobId=${jobId}
+jobId=`sbatch --parsable --dependency=afterok:${prevJobId} ${cmd} ${baseDirec}`
+echo "submitted ${numJobs} jobs with job_id=${jobId}, dependency=${prevJobId}"

@@ -9,4 +9,4 @@
 #SBATCH --mem=20g
 #SBATCH --time=0-03 
 
-./prepare.py
+./prepare.py ${1}

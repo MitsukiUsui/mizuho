@@ -9,20 +9,20 @@
 #SBATCH --mem=20g
 #SBATCH --time=0-03 
 
-FORCE_MODE=false
-
 argFilepath=${1}
-line=`awk -v line=$SLURM_ARRAY_TASK_ID '{if (NR == line) print$0}' ${argFilepath}`
+if [ -z ${SLURM_ARRAY_TASK_ID+x} ]; then lineNum=1; else lineNum=${SLURM_ARRAY_TASK_ID}; fi;
+line=`awk -v lineNum=$lineNum '{if (NR == lineNum) print $0}' ${argFilepath}`
 scaffFilepath=`echo ${line} | cut -d ',' -f1`
 dbFilepath=`echo ${line} | cut -d ',' -f2`
 
-echo ${scaffFilepath},${dbFilepath}
 echo "START: build index for "${scaffoldFilepath}" in "${dbFilepath}
-if [ "$FORCE_MODE" = false ] && [ -e ${dbFilepath}.1.bt2 ]; then
-    echo "PASS: index already exists"
-else
-    dir=`dirname ${dbFilepath}`
-    mkdir -p ${dir}
-    time bowtie2-build --threads 12 ${scaffFilepath} ${dbFilepath}
-    echo "DONE: build index"
+
+FORCE_MODE=false
+forceFilepath=${dbFilepath}.1.bt2
+if [ "$FORCE_MODE" = false ] && [ -e ${forceFilepath} ]; then
+    echo "PASS: target file already exists"
+    exit
 fi
+
+mkdir -p `dirname ${dbFilepath}`
+time bowtie2-build --threads 12 ${scaffFilepath} ${dbFilepath}
