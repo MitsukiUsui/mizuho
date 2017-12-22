@@ -41,6 +41,6 @@ def main(metagenDirec, binDirec):
                 SeqIO.write(record, f, "fasta")
 
 if __name__=="__main__":
-    metagenDirec="/work/GoryaninU/mitsuki/out/metagen/MFC1_36m_anode"
-    binDirec="/work/GoryaninU/mitsuki/out/bin"
+    metagenDirec="/work/GoryaninU/mitsuki/out/metagen/36m_anode"
+    binDirec="/work/GoryaninU/mitsuki/out/bin/36m_anode"
     main(metagenDirec, binDirec)

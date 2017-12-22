@@ -23,3 +23,15 @@ prevJobId=${jobId}
 jobId=`sbatch --parsable --array=1-${numJobs} --dependency=afterok:${prevJobId} ${cmd} ${argFilepath}`
 #jobId=`sbatch --parsable --array=1-${numJobs} ${cmd} ${argFilepath}`
 echo "submitted ${numJobs} jobs with job_id=${jobId}, dependency=${prevJobId}"
+
+#--------------------------------------------------------------------------------
+# map to the index created abobe
+#--------------------------------------------------------------------------------
+cmd=create_db.sh
+argCmd=./arg/${cmd/.sh/.py}
+argFilepath=./arg/${cmd/.sh/.list}
+eval ${argCmd} > ${argFilepath}
+numJobs=`grep -c '' ${argFilepath}`
+prevJobId=${jobId}
+jobId=`sbatch --parsable --array=1-${numJobs} --dependency=afterok:${prevJobId} ${cmd} ${argFilepath}`
+echo "submitted ${numJobs} jobs with job_id=${jobId}, dependency=${prevJobId}"

@@ -5,7 +5,7 @@ import pandas as pd
 import sqlite3
 from Bio import SeqIO
 
-from MapDbController import MapDbContoller
+from MapDbController import MapDbController
 
 def parse_fastq(fastqFilepath):
     dct_lst=[]
@@ -46,38 +46,31 @@ def parse_sam(samFilepath, read2id, scaff2id):
     sam_df=sam_df[["read_id", "scaff_id"]]
     return sam_df
         
-def main(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath, bwaFilepath):
+def main(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath):
     mdc=MapDbController(dbFilepath)
    
     print("START: parse {}".format(fastqFilepath))
     read_df, read2id = parse_fastq(fastqFilepath)
     print("START: load {} records to {}".format(read_df.shape[0], dbFilepath))
-    mdc.delete("read")
+    mdc.clear_row("read")
     read_df.to_sql("read", mdc.con, if_exists="append", index=False)
     
     print("START: parse {}".format(scaffFilepath))
     scaff_df, scaff2id = parse_scaffold(scaffFilepath)
     print("START: load {} records to {}".format(scaff_df.shape[0], dbFilepath))
-    mdc.delete("scaffold")
+    mdc.clear_row("scaffold")
     scaff_df.to_sql("scaffold", mdc.con, if_exists="append", index=False)
     
     print("START: parse {}".format(bowtieFilepath))
     bowtie_df = parse_sam(bowtieFilepath, read2id, scaff2id)
     print("START: load {} records to {}".format(bowtie_df.shape[0], dbFilepath))
-    mdc.delete("bowtie")
+    mdc.clear_row("bowtie")
     bowtie_df.to_sql("bowtie", mdc.con, if_exists="append", index=False)
-    
-    print("START: parse {}".format(bwaFilepath))
-    bwa_df = parse_sam(bwaFilepath, read2id, scaff2id)
-    print("START: load {} records to {}".format(bwa_df.shape[0], dbFilepath))
-    mdc.delete("bwa")
-    bwa_df.to_sql("bwa", mdc.con, if_exists="append", index=False)
 
 if __name__=="__main__":
     dbFilepath=sys.argv[1]
     fastqFilepath=sys.argv[2]
     scaffFilepath=sys.argv[3]
     bowtieFilepath=sys.argv[4]
-    bwaFilepath=sys.argv[5]
-    main(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath, bwaFilepath)
+    main(dbFilepath, fastqFilepath, scaffFilepath, bowtieFilepath)
     

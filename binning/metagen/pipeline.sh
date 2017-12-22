@@ -28,7 +28,6 @@ prevJobId=${jobId}
 jobId=`sbatch --parsable --array=1-${numJobs} --dependency=afterok:${prevJobId} ${cmd} ${argFilepath}`
 echo "submitted ${numJobs} jobs with job_id=${jobId}, dependency=${prevJobId}"
 
-
 #--------------------------------------------------------------------------------
 # summarize information for metagen
 #--------------------------------------------------------------------------------

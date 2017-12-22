@@ -1,18 +1,21 @@
 IFS=$'\n'
-array=`tail -n +2 mizuho_metadata_dna.csv`
+array=`tail -n +2 rerun.list`
 
 for line in ${array[@]}
 do 
-    google=`echo ${line}|cut -d "," -f3`
-    sango=`echo ${line}|cut -d "," -f4`
+    google=`echo ${line}|cut -d "," -f5`
+    sango=`echo ${line}|cut -d "," -f6`
 
-    googlemd5=`md5sum ${google}|cut -d " " -f1`
-    sangomd5=`md5sum ${sango}|cut -d " " -f1`
-
+    googleRet=`md5sum ${google}`
+    googlemd5=`echo ${googleRet}|cut -d " " -f1`
+    sangoRet=`md5sum ${sango}`
+    sangomd5=`echo ${sangoRet}|cut -d " " -f1`
+    
     if [ ${googlemd5} = ${sangomd5} ] ; then
         echo "o.k."
     else
         echo "fail"
-        echo "\t"${google},${sango}
+        ls -alh ${google}
+        ls -alh ${sango}
     fi
 done

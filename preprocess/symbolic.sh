@@ -7,14 +7,14 @@ get_stat () {
 }
 
 IFS=$'\n'
-array=`tail -n +2 mizuho_metadata_rna.csv`
+array=`tail -n +2 filepath_dna.csv`
 
-seqDirec=/work/GoryaninU/mitsuki/mizuho/rna/row
+seqDirec=/work/GoryaninU/mitsuki/mizuho/dna/row
 for line in ${array[@]}
 do 
-    fastqId=`echo ${line}|cut -d "," -f1`
-    filepath="${seqDirec}/${fastqId}.fastq.gz"
-    #sango=`echo ${line}|cut -d "," -f3`
-    #ln -s ${sango} ${filepath}
-    get_stat ${filepath}
+    row=`echo ${line}|cut -d "," -f4`
+    sango=`echo ${line}|cut -d "," -f6`
+    echo "${sango},${row}"
+#    ln -s ${sango} ${filepath}
+#    get_stat ${filepath}
 done

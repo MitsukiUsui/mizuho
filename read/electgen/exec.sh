@@ -3,7 +3,7 @@
 #SBATCH --job-name=diamond
 #SBATCH --partition=compute
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=4
 #SBATCH --input=none
 #SBATCH --output=./log/diamond_%A_%a.out
 #SBATCH --error=./log/diamond_%A_%a.err
@@ -32,14 +32,14 @@ if [ `echo "${seqFilepath}" | grep ".fastq.gz"` ];then
     fatt tofasta ${tmpFilepath} > ${queryFilepath}
     rm ${tmpFilepath}
 elif [ `echo "${seqFilepath}" | grep ".fastq"` ];then
-    echo "START: convert .fastq to .fasta"
     queryFilepath=${seqFilepath/.fastq/.fasta}
-    fatt tofasta > ${queryFilepath}
+    echo "START: convert ${seqFilepath} to ${queryFilepath}"
+    fatt tofasta ${seqFilepath} > ${queryFilepath}
 else
     queryFilepath=${seqFilepath}
 fi
 
-diamond blastx --threads 12 \
+diamond blastx --threads 4 \
                -d ${dbFilepath} \
                -q ${queryFilepath} \
                -o ${outFilepath}

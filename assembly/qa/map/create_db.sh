@@ -17,8 +17,8 @@ dbFilepath=`echo ${line} | cut -d ',' -f1`
 fastqFilepath=`echo ${line} | cut -d ',' -f2`
 scaffFilepath=`echo ${line} | cut -d ',' -f3`
 bowtieFilepath=`echo ${line} | cut -d ',' -f4`
-bwaFilepath=`echo ${line} | cut -d ',' -f5`
 
 mkdir -p `dirname ${dbFilepath}`
 sqlite3 ${dbFilepath} --init schema.sql
-./import_db.py ${dbFilepath} ${fastqFilepath} ${scaffFilepath} ${bowtieFilepath} ${bwaFilepath}
+./import_db.py ${dbFilepath} ${fastqFilepath} ${scaffFilepath} ${bowtieFilepath}
+./stat_db.py ${dbFilepath} ${dbFilepath/.sq3/.stat}

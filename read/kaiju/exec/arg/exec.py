@@ -8,9 +8,8 @@ dmpFilepath="{}/nodes.dmp".format(dbDirec)
 pairFilepath="pair.list"
 pair_df=pd.read_csv(pairFilepath)
 for _,row in pair_df.iterrows():
-    seqDirec="/work/GoryaninU/mitsuki/mizuho/dna/filter"
-    leftFilepath="{}/{}.fastq".format(seqDirec, row["left_fastq_id"])
-    rightFilepath="{}/{}.fastq".format(seqDirec, row["right_fastq_id"])
+    leftFilepath=row["left_filepath"]
+    rightFilepath=row["right_filepath"]
    
     #submit with refseq database
     dbFilepath="{}/kaiju_db.fmi".format(dbDirec)

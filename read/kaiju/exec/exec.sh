@@ -10,10 +10,6 @@
 #SBATCH --mem=100g
 #SBATCH --time=1-00 
 
-
-#--------------------------------------------------------------------------------
-# array job expander
-#--------------------------------------------------------------------------------
 argFilepath=${1}
 if [ -z ${SLURM_ARRAY_TASK_ID+x} ]; then lineNum=1; else lineNum=${SLURM_ARRAY_TASK_ID}; fi;
 line=`awk -v lineNum=$lineNum '{if (NR == lineNum) print $0}' ${argFilepath}`
@@ -23,7 +19,6 @@ dbFilepath=`echo ${line} | cut -d ',' -f2`
 forwardFilepath=`echo ${line} | cut -d ',' -f3`
 reverseFilepath=`echo ${line} | cut -d ',' -f4`
 outFilepath=`echo ${line} | cut -d ',' -f5`
-genusFilepath=${outFilepath/.tsv/.genus}
 
 echo "START: output ${outFilepath}"
 
@@ -39,8 +34,16 @@ else
     echo "DONE: output ${outFilepath}"
 fi
 
+genusFilepath=${outFilepath/.tsv/.genus}
 kaijuReport -t ${nodesFilepath} -n ${namesFilepath} \
             -i ${outFilepath} \
             -r genus \
             -o ${genusFilepath}
 echo "DONE: output ${genusFilepath}"
+
+phylumFilepath=${outFilepath/.tsv/.phylum}
+kaijuReport -t ${nodesFilepath} -n ${namesFilepath} \
+            -i ${outFilepath} \
+            -r phylum \
+            -o ${phylumFilepath}
+echo "DONE: output ${phylumFilepath}"

@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
 import sys
-from MapDbController import MapDbContoller
+import pandas as pd
+from MapDbController import MapDbController
         
 def main(dbFilepath, statFilepath):
     mdc=MapDbController(dbFilepath)
     total=mdc.count_row("read")
     
     dct_lst=[]
-    for mapper in ("bowtie", "bwa"):
+    for mapper in ("bowtie",):
         dct={"total": total, "mapper": mapper}
         dct["map_0"]=mdc.calc_mappability(mapper, 1)
         dct["map_3"]=mdc.calc_mappability(mapper, 1000)

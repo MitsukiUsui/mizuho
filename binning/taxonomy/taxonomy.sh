@@ -5,7 +5,7 @@ cd /home/m/mitsuki-usui/mizuho/assembly/qa/taxonomy
 #--------------------------------------------------------------------------------
 # configuration
 #--------------------------------------------------------------------------------
-baseDirec=/work/GoryaninU/mitsuki/out/taxonomy/bin
+baseDirec=/work/GoryaninU/mitsuki/out/taxonomy/36m_anode_ref
 
 #--------------------------------------------------------------------------------
 # run mmseqs

@@ -3,12 +3,12 @@
 #SBATCH --job-name=diamond
 #SBATCH --partition=compute
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=8
 #SBATCH --input=none
 #SBATCH --output=./log/diamond_%A_%a.out
 #SBATCH --error=./log/diamond_%A_%a.err
 #SBATCH --mem=20g
-#SBATCH --time=0-04
+#SBATCH --time=0-01
 
 argFilepath=${1}
 if [ -z ${SLURM_ARRAY_TASK_ID+x} ]; then lineNum=1; else lineNum=${SLURM_ARRAY_TASK_ID}; fi;
@@ -24,7 +24,7 @@ if [ "$FORCE_MODE" = false ] && [ -e ${forceFilepath} ]; then
     exit
 fi
 
-diamond blastp --threads 12 \
+diamond blastp --threads 8 \
                -d ${dbFilepath} \
                -q ${queryFilepath} \
                -o ${outFilepath}

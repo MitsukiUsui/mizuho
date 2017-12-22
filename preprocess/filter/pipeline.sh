@@ -28,9 +28,9 @@ sampleId=`echo ${line} | cut -d ',' -f2`
 
 leftFastqId=${sampleId}_R1
 rightFastqId=${sampleId}_R2
-# input row fastq.gz
-rowLeftFilepath=${baseDirec}/row/${leftFastqId}.fastq.gz
-rowRightFilepath=${baseDirec}/row/${rightFastqId}.fastq.gz
+# input raw fastq.gz
+rawLeftFilepath=${baseDirec}/raw/${leftFastqId}.fastq.gz
+rawRightFilepath=${baseDirec}/raw/${rightFastqId}.fastq.gz
 # trimed fastq
 trimLeftFilepath=${baseDirec}/trim/${leftFastqId}.fastq
 trimRightFilepath=${baseDirec}/trim/${rightFastqId}.fastq
@@ -42,7 +42,7 @@ corRightFilepath=${spadesDirec}/corrected/${rightFastqId}.00.0_0.cor.fastq.gz
 filterLeftFilepath=${baseDirec}/filter/${leftFastqId}.fastq
 filterRightFilepath=${baseDirec}/filter/${rightFastqId}.fastq
 
-echo "START: process ${rowLeftFilepath}, ${rowRightFilepath}"
+echo "START: process ${rawLeftFilepath}, ${rawRightFilepath}"
 
 #--------------------------------------------------------------------------------
 # check existance of target file
@@ -55,29 +55,32 @@ if [ "$FORCE_MODE" = false ] && [ -e ${forceFilepath} ]; then
 fi
 
 #--------------------------------------------------------------------------------
-# get stats (row)
+# get stats (raw)
 #--------------------------------------------------------------------------------
-get_stat ${rowLeftFilepath}
-get_stat ${rowRightFilepath}
+get_stat ${rawLeftFilepath}
+get_stat ${rawRightFilepath}
 
 #--------------------------------------------------------------------------------
 # trim adapter & dirty ends
 #--------------------------------------------------------------------------------
-echo "START: trim ${rowLeftFilepath}, ${rowRightFilepath}"
+echo "START: trim ${rawLeftFilepath}, ${rawRightFilepath}"
 
 tmpLeftFilepath=${trimLeftFilepath/.fastq/.tmp.fastq}
 tmpRightFilepath=${trimRightFilepath/.fastq/.tmp.fastq}
 
+module load python/3.5.0
 time cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
               -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
               -o ${tmpLeftFilepath} \
               -p ${tmpRightFilepath} \
               --minimum-length 100 \
-              ${rowLeftFilepath} ${rowRightFilepath}
+              ${rawLeftFilepath} ${rawRightFilepath}
 time cutadapt --cut 10 --cut -5 \
               -o ${trimLeftFilepath} ${tmpLeftFilepath}
 time cutadapt --cut 10 --cut -5 \
               -o ${trimRightFilepath} ${tmpRightFilepath}
+module load python/3.5.0
+
 rm ${tmpLeftFilepath}
 rm ${tmpRightFilepath}
 get_stat ${trimLeftFilepath}

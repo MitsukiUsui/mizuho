@@ -49,7 +49,8 @@ def main(metagenDirec, sampleListFilepath, assemListFilepath):
     for i, assemName in enumerate(assem_df["assembly_name"]):
         subTable_df=pd.DataFrame(columns=column_lst)
         for sampleId in sample_df["sample_id"]:
-            countFilepath="{}/bowtie/map/{}/{}.count".format(metagenDirec, assemName, sampleId)
+            #countFilepath="{}/bowtie/map/{}/{}.count".format(metagenDirec, assemName, sampleId)
+            countFilepath="/work/GoryaninU/mitsuki/out/map/bowtie/sam/{}/{}.count".format(assemName, sampleId)
             count_df=pd.read_csv(countFilepath, delimiter="\t", header=None)
 
             count_lst=[]

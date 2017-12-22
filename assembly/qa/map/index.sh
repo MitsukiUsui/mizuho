@@ -17,7 +17,14 @@ mapper=`echo ${line} | cut -d ',' -f1`
 seqFilepath=`echo ${line} | cut -d ',' -f2`
 dbFilepath=`echo ${line} | cut -d ',' -f3`
 
-echo "START: build index for ${mapper}"
+echo "START: build index, ${dbFilepath}"
+FORCE_MODE=false
+forceFilepath=${dbFilepath}.1.bt2
+if [ "$FORCE_MODE" = false ] && [ -e ${forceFilepath} ]; then
+    echo "PASS: target file already exists"
+    exit
+fi
+
 if [ "$mapper" = bowtie ]; then
     time bowtie2-build --thread 8 ${seqFilepath} ${dbFilepath}
 elif [ "$mapper" = bwa ]; then

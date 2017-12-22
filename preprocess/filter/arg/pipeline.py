@@ -3,7 +3,7 @@
 import pandas as pd
 
 baseDirec="/work/GoryaninU/mitsuki/mizuho/dna"
-pairFilepath="../pair.list"
+pairFilepath="rerun.list"
 pair_df=pd.read_csv(pairFilepath)
 for _,row in pair_df.iterrows():
     sampleId=row["sample_id"]

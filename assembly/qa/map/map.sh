@@ -22,15 +22,24 @@ samFilepath=`echo ${line} | cut -d ',' -f5`
 mkdir -p `dirname ${samFilepath}`
 echo "START: map with ${mapper}"
 
+FORCE_MODE=false
+forceFilepath=${samFilepath}
+if [ "$FORCE_MODE" = false ] && [ -e ${forceFilepath} ]; then
+    echo "PASS: target file already exists"
+    exit
+fi
+
 if [ "$mapper" = bowtie ]; then
-    time bowtie2 -a --threads 8 --maxins 1000 \
+    time bowtie2 --threads 8 --maxins 1000 \
                  -x ${dbFilepath} \
                  -1 ${leftFilepath} -2 ${rightFilepath} \
                  -S ${samFilepath}
 elif [ "$mapper" = bwa ]; then
     module load bwa.gcc/0.7.10
-    time bwa mem -a -t 8 ${dbFilepath} ${leftFilepath} ${rightFilepath} > ${samFilepath}
+    time bwa mem -t 8 ${dbFilepath} ${leftFilepath} ${rightFilepath} > ${samFilepath}
 fi
 
 source ~/mizuho/helper/helper.sh
 sam2bam ${samFilepath}
+module load samtools
+samtools idxstats ${samFilepath/.sam/.bam} > ${samFilepath/.sam/.count}

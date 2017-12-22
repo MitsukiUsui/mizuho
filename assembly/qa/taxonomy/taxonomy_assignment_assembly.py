@@ -42,30 +42,25 @@ def majority_vote(df):
             dct[rank]=""
     return dct
 
-def main(geneFilepath, scaffFilepath):
+def main(geneFilepath, assemFilepath):
     gene_df=pd.read_csv(geneFilepath)
     
     dct_lst=[]
     for assemname in sorted(set(gene_df["assembly_name"])):
         print("START: process {}".format(assemname))
         assem_df=gene_df[gene_df["assembly_name"]==assemname]
-        for scaffname in sorted(set(assem_df["scaffold_name"])):
-            scaff_df=assem_df[assem_df["scaffold_name"]==scaffname]
-            
-            dct={}
-            dct["assembly_name"]=assemname
-            dct["scaffold_name"]=scaffname
-            dct.update(majority_vote(scaff_df))
-            dct_lst.append(dct)
+        dct={"assembly_name": assemname}
+        dct.update(majority_vote(assem_df))
+        dct_lst.append(dct)
         
     out_df=pd.DataFrame(dct_lst)
-    out_df=out_df[["assembly_name", "scaffold_name"] + rank_lst]
-    out_df.to_csv(scaffFilepath, index=False)
-    print("DONE: output to {}".format(scaffFilepath))
+    out_df=out_df[["assembly_name"] + rank_lst]
+    out_df.to_csv(assemFilepath, index=False)
+    print("DONE: output to {}".format(assemFilepath))
 
 if __name__=="__main__":
     baseDirec=sys.argv[1]
     geneFilepath="{}/taxonomy_gene.csv".format(baseDirec)
-    scaffFilepath="{}/taxonomy_scaffold.csv".format(baseDirec)
-    main(geneFilepath, scaffFilepath)
+    assemFilepath="{}/taxonomy_assembly.csv".format(baseDirec)
+    main(geneFilepath, assemFilepath)
     
